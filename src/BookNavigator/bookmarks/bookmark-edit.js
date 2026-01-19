@@ -2,6 +2,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { css, html, LitElement, nothing } from 'lit';
 import bookmarkColorsCSS from '../assets/bookmark-colors.js';
 import buttonCSS from '../assets/button-base.js';
+import { sharedStyles } from '../sharedStyles.js';
 
 export class IABookmarkEdit extends LitElement {
   static get properties() {
@@ -64,12 +65,13 @@ export class IABookmarkEdit extends LitElement {
 
   bookmarkColor(color) {
     return html`
-      <li>
+      <div class="color-option">
         <input type="radio" name="color" id="color_${color.id}" .value=${color.id} @change=${() => this.changeColorTo(color.id)} ?checked=${this.bookmark.color === color.id}>
-        <label for="color_${color.id}">
-          <icon-bookmark class=${color.className}></icon-bookmark>
+        <label for="color_${color.id}" title=${color.className}>
+          <icon-bookmark class=${color.className} aria-hidden="true"></icon-bookmark>
+          <span class="sr-only">${color.className}</span>
         </label>
-      </li>
+      </div>
     `;
   }
 
@@ -91,9 +93,9 @@ export class IABookmarkEdit extends LitElement {
           <label for="note">Note <small>(optional)</small></label>
           <textarea rows="4" cols="80" name="note" id="note" @change=${this.updateNote}>${this.bookmark.note}</textarea>
           <label for="color">Bookmark color</label>
-          <ul>
+          <div class="color-options">
             ${repeat(this.bookmarkColors, color => color.id, this.bookmarkColor.bind(this))}
-          </ul>
+          </div>
           <div class="actions">
             <button type="button" class="ia-button cancel" @click=${this.emitDeleteEvent}>Delete</button>
             <input class="ia-button" type="submit" value="Save">
@@ -152,21 +154,28 @@ export class IABookmarkEdit extends LitElement {
       resize: vertical;
     }
 
-    ul {
+    .color-options {
       display: grid;
       grid-template-columns: repeat(3, auto);
       grid-gap: 0 2rem;
       justify-content: start;
       padding: 1rem 0 0 0;
       margin: 0 0 2rem 0;
-      list-style: none;
     }
 
-    li input {
-      display: none;
+    .color-option {
+      position: relative;
     }
 
-    li label {
+    .color-option input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .color-option label {
       display: block;
       min-width: 50px;
       padding-top: .4rem;
@@ -176,8 +185,17 @@ export class IABookmarkEdit extends LitElement {
       cursor: pointer;
     }
 
-    li input:checked + label {
+    .color-option input:checked + label {
       border-color: var(--primaryTextColor);
+    }
+
+    .color-option input:focus + label {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    .color-option input:focus:not(:focus-visible) + label {
+      outline: none;
     }
 
     input[type="submit"] {
@@ -208,7 +226,7 @@ export class IABookmarkEdit extends LitElement {
       justify-items: stretch;
     }
     `;
-    return [buttonCSS, bookmarkColorsCSS, bookmarkEditCSS];
+    return [sharedStyles, buttonCSS, bookmarkColorsCSS, bookmarkEditCSS];
   }
 }
 customElements.define('ia-bookmark-edit', IABookmarkEdit);
