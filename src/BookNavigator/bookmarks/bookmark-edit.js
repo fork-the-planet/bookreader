@@ -89,18 +89,18 @@ export class IABookmarkEdit extends LitElement {
       ${this.renderHeader ? IABookmarkEdit.headerSection : nothing}
       ${this.showBookmark ? this.bookmarkTemplate : nothing}
       <form action="" method="put" @submit=${this.emitSaveEvent}>
+        <label for="note">Note <small>(optional)</small></label>
+        <textarea rows="4" cols="80" name="note" id="note" @change=${this.updateNote}>${this.bookmark.note}</textarea>
         <fieldset>
-          <label for="note">Note <small>(optional)</small></label>
-          <textarea rows="4" cols="80" name="note" id="note" @change=${this.updateNote}>${this.bookmark.note}</textarea>
-          <label for="color">Bookmark color</label>
+          <legend>Bookmark color</legend>
           <div class="color-options">
             ${repeat(this.bookmarkColors, color => color.id, this.bookmarkColor.bind(this))}
           </div>
-          <div class="actions">
-            <button type="button" class="ia-button cancel" @click=${this.emitDeleteEvent}>Delete</button>
-            <input class="ia-button" type="submit" value="Save">
-          </div>
         </fieldset>
+        <div class="actions">
+          <button type="button" class="ia-button cancel" @click=${this.emitDeleteEvent}>Delete</button>
+          <input class="ia-button" type="submit" value="Save">
+        </div>
       </form>
     `;
   }
@@ -130,11 +130,11 @@ export class IABookmarkEdit extends LitElement {
     }
 
     fieldset {
-      padding: 2rem 0 0 0;
+      padding: 0;
       border: none;
     }
 
-    label {
+    label, legend {
       display: block;
       font-weight: bold;
     }
@@ -155,12 +155,8 @@ export class IABookmarkEdit extends LitElement {
     }
 
     .color-options {
-      display: grid;
-      grid-template-columns: repeat(3, auto);
-      grid-gap: 0 2rem;
-      justify-content: start;
-      padding: 1rem 0 0 0;
-      margin: 0 0 2rem 0;
+      display: flex;
+      gap: 10px;
     }
 
     .color-option {
@@ -220,6 +216,7 @@ export class IABookmarkEdit extends LitElement {
     }
 
     .actions {
+      margin-top: 20px;
       display: grid;
       grid-template-columns: auto auto;
       grid-gap: 0 1rem;
