@@ -12,7 +12,7 @@ import VisualAdjustmentsProvider from '@/src/BookNavigator/visual-adjustments/vi
 import ViewableFilesProvider from '@/src/BookNavigator/viewable-files.js';
 import { ModalManager } from '@internetarchive/modal-manager';
 import { SharedResizeObserver } from '@internetarchive/shared-resize-observer';
-import '@/src/BookNavigator/book-navigator.js';
+import '@/src/ia-bookreader/ia-bookreader.js';
 
 const promise0 = () => new Promise(res => setTimeout(res, 0));
 
@@ -26,8 +26,8 @@ const container = (sharedObserver = null) => {
   };
   const modalMgr = new ModalManager();
   return html`
-    <book-navigator
-      .itemMD=${itemStub}
+    <ia-bookreader
+      .item=${itemStub}
       .baseHost=${`https://foo.archive.org`}
       .sharedObserver=${sharedObserver || new SharedResizeObserver()}
       .modal=${modalMgr}
@@ -35,8 +35,8 @@ const container = (sharedObserver = null) => {
       <div slot="main">
         <div id="BookReader"></div>
         <p class="visible-in-reader">now showing</p>
-      <\div>
-    </book-navigator>
+      </div>
+    </ia-bookreader>
   `;
 };
 
@@ -62,12 +62,12 @@ afterEach(() => {
 });
 
 
-describe('<book-navigator>', () => {
+describe('<ia-bookreader>', () => {
   describe("How it loads", () => {
     describe('Attaches BookReader listeners before `br.init` is called', () => {
       test('binds global event listeners', async () => {
         const el = fixtureSync(container());
-        const spy = sinon.spy(el, 'bindEventListeners');
+        const spy = sinon.spy(el, '_bindEventListeners');
         await elementUpdated(el);
         expect(spy.callCount).toEqual(1);
       });
@@ -81,45 +81,30 @@ describe('<book-navigator>', () => {
           refs: {},
         };
 
-        const sharedObserver = new SharedResizeObserver();
-        sinon.spy(sharedObserver, 'addObserver');
-        const el = fixtureSync(container(sharedObserver));
-
+        const el = fixtureSync(container());
         el.initializeBookSubmenus = sinon.fake();
-        el.emitLoadingStatusUpdate = sinon.fake();
         el.handleResize = sinon.fake();
+        sinon.spy(el, 'loadSharedObserver');
         await elementUpdated(el);
 
         expect(brStub.resize.callCount).toEqual(0);
+        expect(el.loadSharedObserver.callCount).toEqual(0);
 
         window.dispatchEvent(new CustomEvent('BookReader:PostInit', {
           detail: { props: brStub },
         }));
         await elementUpdated(el);
 
-        expect(el.emitLoadingStatusUpdate.callCount).toEqual(1);
+        expect(el.loaded).toEqual(true);
         expect(el.bookreader).toEqual(brStub); // sets bookreader
-        expect(el.bookReaderLoaded).toBeTruthy(); // notes bookreader is loaded
+        expect(el.bookReaderLoaded).toBeTruthy();
         expect(el.bookReaderCannotLoad).toBeFalsy();
-        expect(sharedObserver.addObserver.callCount).toEqual(1);
+        expect(el.loadSharedObserver.callCount).toEqual(1);
 
         await promise0();
 
         expect(brStub.resize.callCount > 0).toBeTruthy();
       });
-    });
-    test('Emits a BrBookNav:PostInit event at completion', async () => {
-      let initEventFired = false;
-      window.addEventListener('BrBookNav:PostInit', (e) => {
-        initEventFired = true;
-      });
-      const el = fixtureSync(container());
-      const spy = sinon.spy(el, 'emitPostInit');
-
-      await elementUpdated(el);
-
-      expect(initEventFired).toBeTruthy();
-      expect(spy.callCount).toEqual(1);
     });
 
     test('creates an item image from metadata', async () => {
@@ -265,18 +250,18 @@ describe('<book-navigator>', () => {
       describe('Side Menu Panels', () => {
         test('`isWideEnoughToOpenMenu` checks if menu should be open', async () => {
           const el = fixtureSync(container());
-          el.brWidth = 300;
+          el._brWidth = 300;
           await el.elementUpdated;
 
           expect(el.isWideEnoughToOpenMenu).toEqual(false);
 
-          el.brWidth = 641;
+          el._brWidth = 641;
           await el.elementUpdated;
 
           expect(el.isWideEnoughToOpenMenu).toEqual(true);
         });
         describe('Control which side menu to toggle open by using: `this.updateSideMenu`', () => {
-          test('Emits `@updateSideMenu` to signal which menu gets the update', async () => {
+          test('Call `updateSideMenu` to signal which menu gets the update', async () => {
             const el = fixtureSync(container());
             const brStub = {
               resize: sinon.fake(),
@@ -287,20 +272,12 @@ describe('<book-navigator>', () => {
             };
             el.bookreader = brStub;
             await elementUpdated(el);
-
-            let initEventFired = false;
-            let eventDetails = {};
-            el.addEventListener('updateSideMenu', (e) => {
-              eventDetails = e.detail;
-              initEventFired = true;
-            });
-
+            sinon.spy(el.itemNav, 'openShortcut');
             el.updateSideMenu('foo', 'open');
-            expect(initEventFired).toEqual(true);
-            expect(eventDetails.menuId).toEqual('foo');
-            expect(eventDetails.action).toEqual('open');
+            expect(el.itemNav.openShortcut.callCount).toEqual(1);
+            expect(el.itemNav.openShortcut.getCall(0).args).toEqual(['foo']);
           });
-          test('Will Not Emit `@updateSideMenu` if menu ID is missing', async() => {
+          test('Will not call `@updateSideMenu` if menu ID is missing', async() => {
             const el = fixtureSync(container());
             const brStub = {
               resize: sinon.fake(),
@@ -311,14 +288,9 @@ describe('<book-navigator>', () => {
             };
             el.bookreader = brStub;
             await elementUpdated(el);
-
-            let initEventFired = false;
-            el.addEventListener('updateSideMenu', (e) => {
-              initEventFired = true;
-            });
-
+            sinon.spy(el.itemNav, 'openShortcut');
             el.updateSideMenu('', 'open');
-            expect(initEventFired).toEqual(false);
+            expect(el.itemNav.openShortcut.callCount).toEqual(0);
           });
         });
       });
@@ -337,16 +309,14 @@ describe('<book-navigator>', () => {
             el.bookreader = brStub;
             await elementUpdated(el);
 
-            let sidePanelConfig = {};
-            el.addEventListener('updateSideMenu', (e) => {
-              sidePanelConfig = e.detail;
-            });
+            sinon.spy(el, 'updateSideMenu');
             const toggleSearchMenuEvent = new Event('BookReader:ToggleSearchMenu');
             window.dispatchEvent(toggleSearchMenuEvent);
 
             await elementUpdated(el);
-            expect(sidePanelConfig.menuId).toEqual('search');
-            expect(sidePanelConfig.action).toEqual('toggle');
+            expect(el.openMenuName).toEqual('search');
+            expect(el.updateSideMenu.callCount).toEqual(1);
+            expect(el.updateSideMenu.getCall(0).args).toEqual(['search', 'toggle']);
           });
         });
       });
@@ -354,7 +324,7 @@ describe('<book-navigator>', () => {
   });
 
   describe('Resizing',() => {
-    test('keeps track of `brWidth` and `brHeight`', async () => {
+    test('keeps track of `_brWidth` and `_brHeight`', async () => {
       const el = fixtureSync(container());
       const brStub = {
         resize: sinon.fake(),
@@ -365,8 +335,8 @@ describe('<book-navigator>', () => {
       };
       el.bookreader = brStub;
       await elementUpdated(el);
-      expect(el.brWidth).toEqual(0);
-      expect(el.brHeight).toEqual(0);
+      expect(el._brWidth).toEqual(0);
+      expect(el._brHeight).toEqual(0);
 
       const mockResizeEvent = {
         contentRect: {
@@ -380,8 +350,8 @@ describe('<book-navigator>', () => {
       await elementUpdated(el);
       await promise0();
 
-      expect(el.brHeight).toEqual(500);
-      expect(el.brWidth).toEqual(900);
+      expect(el._brHeight).toEqual(500);
+      expect(el._brWidth).toEqual(900);
     });
     test('resizes if height/width changes && is not animating', async () => {
       const el = fixtureSync(container());
@@ -396,8 +366,8 @@ describe('<book-navigator>', () => {
 
       el.bookreader = brStub;
       await elementUpdated(el);
-      expect(el.brWidth).toEqual(0);
-      expect(el.brHeight).toEqual(0);
+      expect(el._brWidth).toEqual(0);
+      expect(el._brHeight).toEqual(0);
 
       const mockResizeEvent = {
         contentRect: {
@@ -463,7 +433,6 @@ describe('<book-navigator>', () => {
       };
 
       el.bookreader = brStub;
-      el.emitMenuShortcutsUpdated = sinon.fake();
       await elementUpdated(el);
 
       el.manageFullScreenBehavior();
@@ -471,12 +440,12 @@ describe('<book-navigator>', () => {
       expect(el.menuShortcuts.length).toEqual(1);
       expect(el.menuShortcuts[0].id).toEqual('fullscreen');
       expect(el.menuShortcuts[0].icon).toBeDefined();
-      expect(el.emitMenuShortcutsUpdated.callCount).toEqual(1);
     });
     test('clicking Fullscreen shortcut closes fullscreen', async () => {
       const el = fixtureSync(container());
       const brStub = {
         isFullscreen: () => true,
+        exitFullScreen: sinon.fake(),
         options: {
           enableFSLogoShortcut: true,
         },
@@ -484,8 +453,6 @@ describe('<book-navigator>', () => {
       };
 
       el.bookreader = brStub;
-      el.emitMenuShortcutsUpdated = sinon.fake();
-      el.closeFullscreen = sinon.fake();
       await elementUpdated(el);
 
       el.manageFullScreenBehavior();
@@ -494,7 +461,7 @@ describe('<book-navigator>', () => {
       fixtureSync(el.menuShortcuts[0].icon).click();
       await elementUpdated(el);
 
-      expect(el.closeFullscreen.callCount).toEqual(1);
+      expect(brStub.exitFullScreen.callCount).toEqual(1);
     });
     test('removes Fullscreen shortcut when leaving fullscreen', async() => {
       const el = fixtureSync(container());
@@ -507,13 +474,11 @@ describe('<book-navigator>', () => {
       };
 
       el.bookreader = brStub;
-      el.emitMenuShortcutsUpdated = sinon.fake();
       await elementUpdated(el);
 
       el.manageFullScreenBehavior();
       await elementUpdated(el);
       expect(el.menuShortcuts.length).toEqual(0);
-      expect(el.emitMenuShortcutsUpdated.callCount).toEqual(1);
     });
     test('Event: Listens for `BookReader:FullscreenToggled', async() => {
       const el = fixtureSync(container());

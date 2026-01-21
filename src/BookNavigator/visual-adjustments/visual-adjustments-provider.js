@@ -29,8 +29,7 @@ const visualAdjustmentOptions = [{
 }];
 
 export default class VisualAdjustmentsProvider {
-  constructor(options) {
-    const { onProviderChange, bookreader } = options;
+  constructor({ onProviderChange, bookreader }) {
     this.onProviderChange = onProviderChange;
     this.bookContainer = bookreader.refs.$brContainer;
     this.bookreader = bookreader;

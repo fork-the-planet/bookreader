@@ -13,7 +13,10 @@ const sortTypes = {
 };
 export default class ViewableFilesProvider {
   /**
-   * @param {import('../BookReader').default} bookreader
+   * @param {object} options
+   * @param {import('../BookReader').default} options.bookreader
+   * @param {string} options.baseHost
+   * @param {function} options.onProviderChange
    */
   constructor({ baseHost, bookreader, onProviderChange }) {
     /** @type {import('../BookReader').default} */

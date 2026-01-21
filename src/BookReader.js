@@ -161,7 +161,7 @@ BookReader.prototype.setup = function(options) {
   // Store the options used to setup bookreader
   this.options = options;
 
-  /** @type {import('@/src/BookNavigator/book-navigator.js').BookNavigator} */
+  /** @type {import('@/src/ia-bookreader/ia-bookreader.js').IaBookReader} */
   this.shell;
 
   // Base server used by some api calls
