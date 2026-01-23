@@ -1,9 +1,8 @@
 import { LitElement, html, css } from 'lit';
-import { sharedStyles } from '../sharedStyles.js';
 
 export default class BookmarkButton extends LitElement {
   static get styles() {
-    const main = css`
+    return css`
       button {
         -webkit-appearance: none;
         appearance: none;
@@ -29,8 +28,6 @@ export default class BookmarkButton extends LitElement {
         right: 0.2rem;
       }
     `;
-
-    return [sharedStyles, main];
   }
 
   static get properties() {
@@ -59,8 +56,7 @@ export default class BookmarkButton extends LitElement {
     const position = this.side || 'right';
     return html`
       <button title=${this.title} @click=${this.handleClick} class=${position}>
-        <icon-bookmark state=${this.state} aria-hidden="true" role="presentation"></icon-bookmark>
-        <span class="sr-only">${this.title}</span>
+        <icon-bookmark state=${this.state} aria-hidden="true"></icon-bookmark>
       </button>
     `;
   }

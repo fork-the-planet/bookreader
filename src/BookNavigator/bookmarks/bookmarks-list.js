@@ -3,7 +3,6 @@ import { css, html, LitElement, nothing } from 'lit';
 import './bookmark-edit.js';
 import '@internetarchive/icon-edit-pencil/icon-edit-pencil.js';
 import bookmarkColorsCSS from '../assets/bookmark-colors.js';
-import { sharedStyles } from '../sharedStyles.js';
 
 export class IABookmarksList extends LitElement {
   static get properties() {
@@ -105,9 +104,7 @@ export class IABookmarksList extends LitElement {
         <div class="bookmark-card ${activeClass}">
           <div class="bookmark-header" @click=${() => this.emitSelectedEvent(bookmark)}>
             <button>
-              <span aria-label="${className} bookmark">
-                <icon-bookmark class=${className} aria-hidden="true" role="presentation"></icon-bookmark>
-              </span>
+              <icon-bookmark class=${className} aria-label="${className} bookmark"></icon-bookmark>
               <span> Page ${bookmark.page}</span>
             </button>
             <button
@@ -116,8 +113,7 @@ export class IABookmarksList extends LitElement {
               title="Edit this bookmark"
               aria-expanded=${editMode ? 'true' : 'false'}
             >
-              <ia-icon-edit-pencil aria-hidden="true" role="presentation"></ia-icon-edit-pencil>
-              <span class="sr-only">Edit this bookmark</span>
+              <ia-icon-edit-pencil aria-hidden="true"></ia-icon-edit-pencil>
             </button>
           </div>
           ${!editMode && bookmark.note ? html`<p>${bookmark.note}</p>` : nothing}
@@ -282,7 +278,7 @@ export class IABookmarksList extends LitElement {
       }
     `;
 
-    return [sharedStyles, main, bookmarkColorsCSS];
+    return [main, bookmarkColorsCSS];
   }
 }
 customElements.define('ia-bookmarks-list', IABookmarksList);
