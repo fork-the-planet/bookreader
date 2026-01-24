@@ -99,24 +99,23 @@ export class IABookmarksList extends LitElement {
     const { className } = this.bookmarkColorInfo(bookmark.color);
     const activeClass = bookmark.id === this.activeBookmarkID ? 'active' : '';
     return html`
-      <li
-        @click=${() => this.emitSelectedEvent(bookmark)}
-        tabindex="0"
-        data-pageIndex=${bookmark.id}
-      >
+      <li data-pageIndex=${bookmark.id}>
         <div class="separator"></div>
-        <div class="content ${activeClass}">
-          <button
-            class="edit"
-            @click=${e => this.editBookmark(e, bookmark)}
-            title="Edit this bookmark"
-          >
-            <ia-icon-edit-pencil></ia-icon-edit-pencil>
-          </button>
-          <h4>
-            <icon-bookmark class=${className}></icon-bookmark>
-            <span> Page ${bookmark.page}</span>
-          </h4>
+        <div class="bookmark-card ${activeClass}">
+          <div class="bookmark-header" @click=${() => this.emitSelectedEvent(bookmark)}>
+            <button>
+              <icon-bookmark class=${className} aria-label="${className} bookmark"></icon-bookmark>
+              <span> Page ${bookmark.page}</span>
+            </button>
+            <button
+              class="edit"
+              @click=${e => this.editBookmark(e, bookmark)}
+              title="Edit this bookmark"
+              aria-expanded=${editMode ? 'true' : 'false'}
+            >
+              <ia-icon-edit-pencil aria-hidden="true"></ia-icon-edit-pencil>
+            </button>
+          </div>
           ${!editMode && bookmark.note ? html`<p>${bookmark.note}</p>` : nothing}
           ${editMode ? this.editBookmarkComponent : nothing}
         </div>
@@ -208,19 +207,24 @@ export class IABookmarksList extends LitElement {
         font-style: italic;
       }
 
-      h4 {
+      .bookmark-header {
+        display: flex;
+        align-items: center;
         margin: 0;
         font-size: 1.4rem;
+        font-weight: bold;
       }
-      h4 * {
-        display: inline-block;
+
+      .bookmark-header > button:first-child {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px;
       }
-      h4 icon-bookmark {
-        vertical-align: bottom;
-      }
-      h4 span {
-        vertical-align: top;
-        padding-top: 1%;
+
+      ia-icon-edit-pencil {
+        pointer-events: none;
       }
 
       p {
@@ -243,38 +247,34 @@ export class IABookmarksList extends LitElement {
         display: none;
       }
       li {
-        cursor: pointer;
-        outline: none;
         position: relative;
       }
-      li .content {
-        padding: 2px 0 4px 2px;
+
+      li .bookmark-card {
         border: var(--activeBorderWidth) solid transparent;
-        padding: .2rem 0 .4rem .2rem;
+        border-radius: 4px;
       }
-      li .content.active {
+
+      li .bookmark-card.active {
         border: var(--activeBorderWidth) solid #538bc5;
       }
-      li button.edit {
-        padding: 5px 2px 0 0;
+
+      .bookmark-header button {
         background: transparent;
         cursor: pointer;
-        height: 40px;
-        width: 40px;
-        position: absolute;
-        right: 2px;
-        top: 2px;
-        text-align: right;
         -webkit-appearance: none;
         appearance: none;
-        outline: none;
         box-sizing: border-box;
         border: none;
+        padding: 0;
+        text-align: left;
       }
-      li button.edit > * {
-        display: block;
-        height: 100%;
-        width: 100%;
+
+      li button.edit {
+        height: 34px;
+        width: 34px;
+        flex-shrink: 0;
+        text-align: center;
       }
     `;
 

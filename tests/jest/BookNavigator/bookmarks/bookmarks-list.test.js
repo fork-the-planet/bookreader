@@ -61,7 +61,7 @@ describe('<ia-bookmarks-list>', () => {
     const el = await fixture(container(bookmarks));
 
     setTimeout(() => (
-      el.shadowRoot.querySelector('li').click()
+      el.shadowRoot.querySelector('.bookmark-header > button:first-child').click()
     ));
     const response = await oneEvent(el, 'bookmarkSelected');
 
@@ -72,7 +72,7 @@ describe('<ia-bookmarks-list>', () => {
     const el = await fixture(container(bookmarks));
 
     setTimeout(() => (
-      el.shadowRoot.querySelector('li button').click()
+      el.shadowRoot.querySelector('button.edit').click()
     ));
     const response = await oneEvent(el, 'bookmarkEdited');
 
@@ -116,7 +116,7 @@ describe('<ia-bookmarks-list>', () => {
     const el = await fixture(container(bookmarks));
     let prevState = el.editedBookmark;
 
-    el.shadowRoot.querySelector('li button').click();
+    el.shadowRoot.querySelector('button.edit').click();
     await el.updateComplete;
 
     expect(el.editedBookmark).not.toEqual(prevState);
@@ -125,7 +125,7 @@ describe('<ia-bookmarks-list>', () => {
     // When clicking the same edit button while in edit mode, should toggle
     // edit mode off and remove editedBookmark pointer
     prevState = el.editedBookmark;
-    el.shadowRoot.querySelector('li button').click();
+    el.shadowRoot.querySelector('button.edit').click();
     await el.updateComplete;
 
     expect(el.editedBookmark).not.toEqual(prevState);

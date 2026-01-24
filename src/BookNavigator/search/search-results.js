@@ -6,6 +6,7 @@ import checkmarkIcon from '../assets/icon_checkmark.js';
 import closeIcon from '../assets/icon_close.js';
 import buttonCSS from '../assets/button-base.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { sharedStyles } from '../sharedStyles.js';
 /** @typedef {import('@/src/plugins/search/plugin.search.js').SearchInsideMatch} SearchInsideMatch */
 
 export class IABookSearchResults extends LitElement {
@@ -376,20 +377,8 @@ export class IABookSearchResults extends LitElement {
         height: 40px;
         margin: 0 auto;
       }
-
-      .sr-only {
-        position: absolute !important;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0 !important;
-        margin: -1px !important;
-        overflow: hidden !important;
-        clip: rect(0 0 0 0) !important;
-        white-space: nowrap !important;
-        border: 0 !important;
-      }
     `;
-    return [buttonCSS, mainCSS];
+    return [sharedStyles, buttonCSS, mainCSS];
   }
 }
 customElements.define('ia-book-search-results', IABookSearchResults);

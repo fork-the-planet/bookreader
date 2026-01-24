@@ -56,7 +56,7 @@ export default class BookmarkButton extends LitElement {
     const position = this.side || 'right';
     return html`
       <button title=${this.title} @click=${this.handleClick} class=${position}>
-        <icon-bookmark state=${this.state}></icon-bookmark>
+        <icon-bookmark state=${this.state} aria-hidden="true"></icon-bookmark>
       </button>
     `;
   }

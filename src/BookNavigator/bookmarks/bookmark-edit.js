@@ -64,12 +64,12 @@ export class IABookmarkEdit extends LitElement {
 
   bookmarkColor(color) {
     return html`
-      <li>
+      <div class="color-option">
         <input type="radio" name="color" id="color_${color.id}" .value=${color.id} @change=${() => this.changeColorTo(color.id)} ?checked=${this.bookmark.color === color.id}>
-        <label for="color_${color.id}">
-          <icon-bookmark class=${color.className}></icon-bookmark>
+        <label for="color_${color.id}" title=${color.className}>
+          <icon-bookmark class=${color.className} aria-hidden="true"></icon-bookmark>
         </label>
-      </li>
+      </div>
     `;
   }
 
@@ -87,18 +87,18 @@ export class IABookmarkEdit extends LitElement {
       ${this.renderHeader ? IABookmarkEdit.headerSection : nothing}
       ${this.showBookmark ? this.bookmarkTemplate : nothing}
       <form action="" method="put" @submit=${this.emitSaveEvent}>
+        <label for="note">Note <small>(optional)</small></label>
+        <textarea rows="4" cols="80" name="note" id="note" @change=${this.updateNote}>${this.bookmark.note}</textarea>
         <fieldset>
-          <label for="note">Note <small>(optional)</small></label>
-          <textarea rows="4" cols="80" name="note" id="note" @change=${this.updateNote}>${this.bookmark.note}</textarea>
-          <label for="color">Bookmark color</label>
-          <ul>
+          <legend>Bookmark color</legend>
+          <div class="color-options">
             ${repeat(this.bookmarkColors, color => color.id, this.bookmarkColor.bind(this))}
-          </ul>
-          <div class="actions">
-            <button type="button" class="ia-button cancel" @click=${this.emitDeleteEvent}>Delete</button>
-            <input class="ia-button" type="submit" value="Save">
           </div>
         </fieldset>
+        <div class="actions">
+          <button type="button" class="ia-button cancel" @click=${this.emitDeleteEvent}>Delete</button>
+          <input class="ia-button" type="submit" value="Save">
+        </div>
       </form>
     `;
   }
@@ -128,11 +128,11 @@ export class IABookmarkEdit extends LitElement {
     }
 
     fieldset {
-      padding: 2rem 0 0 0;
+      padding: 0;
       border: none;
     }
 
-    label {
+    label, legend {
       display: block;
       font-weight: bold;
     }
@@ -152,21 +152,24 @@ export class IABookmarkEdit extends LitElement {
       resize: vertical;
     }
 
-    ul {
-      display: grid;
-      grid-template-columns: repeat(3, auto);
-      grid-gap: 0 2rem;
-      justify-content: start;
-      padding: 1rem 0 0 0;
-      margin: 0 0 2rem 0;
-      list-style: none;
+    .color-options {
+      display: flex;
+      gap: 10px;
     }
 
-    li input {
-      display: none;
+    .color-option {
+      position: relative;
     }
 
-    li label {
+    .color-option input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .color-option label {
       display: block;
       min-width: 50px;
       padding-top: .4rem;
@@ -176,8 +179,17 @@ export class IABookmarkEdit extends LitElement {
       cursor: pointer;
     }
 
-    li input:checked + label {
+    .color-option input:checked + label {
       border-color: var(--primaryTextColor);
+    }
+
+    .color-option input:focus + label {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    .color-option input:focus:not(:focus-visible) + label {
+      outline: none;
     }
 
     input[type="submit"] {
@@ -202,6 +214,7 @@ export class IABookmarkEdit extends LitElement {
     }
 
     .actions {
+      margin-top: 20px;
       display: grid;
       grid-template-columns: auto auto;
       grid-gap: 0 1rem;

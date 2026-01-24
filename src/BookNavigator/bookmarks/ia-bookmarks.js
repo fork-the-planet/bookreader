@@ -109,6 +109,7 @@ class IABookmarks extends LitElement {
 
     this.bookmarkColors = [{
       id: 0,
+      // FIXME: This is also used as the aria-label
       className: 'red',
     }, {
       id: 1,
@@ -500,7 +501,6 @@ class IABookmarks extends LitElement {
     return html`
       <button
         class="ia-button primary"
-        tabindex="-1"
         ?disabled=${this.shouldEnableAddBookmarkButton}
         @click=${this.addBookmark}>
         Add bookmark

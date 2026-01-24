@@ -74,7 +74,7 @@ describe('<ia-bookmark-edit>', () => {
     const el = await fixture(container(bookmark));
 
     setTimeout(() => (
-      el.shadowRoot.querySelector('li input').dispatchEvent(new Event('change'))
+      el.shadowRoot.querySelector('.color-option input').dispatchEvent(new Event('change'))
     ));
     const response = await oneEvent(el, 'bookmarkColorChanged');
 
