@@ -3,7 +3,7 @@ import {
   fixture,
   oneEvent,
 } from '@open-wc/testing-helpers';
-import '@/src/BookNavigator/bookmarks/bookmarks-list.js';
+import '@/src/plugins/bookmarks/bookmarks-list.js';
 
 const bookmarks = [{
   id: 1,

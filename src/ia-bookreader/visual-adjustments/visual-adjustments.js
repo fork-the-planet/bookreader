@@ -1,7 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from "lit/directives/repeat.js";
-import { sharedStyles } from '../sharedStyles.js';
+import { sharedStyles } from '../../css/sharedStyles.js';
 import "@internetarchive/icon-magnify-minus/icon-magnify-minus.js";
 import "@internetarchive/icon-magnify-plus/icon-magnify-plus.js";
 

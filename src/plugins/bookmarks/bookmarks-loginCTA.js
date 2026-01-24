@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import buttonStyles from '../assets/button-base.js';
+import buttonStyles from '../../css/button-base.js';
 
 class BookmarksLogin extends LitElement {
   static get properties() {

@@ -1,7 +1,7 @@
 import { LitElement, html, css, render } from 'lit';
 // eslint-disable-next-line no-unused-vars
 import { ModalConfig, ModalManager } from '@internetarchive/modal-manager';
-import buttonStyles from '../assets/button-base.js';
+import buttonStyles from '../../css/button-base.js';
 import './bookmarks-loginCTA.js';
 
 const api = {

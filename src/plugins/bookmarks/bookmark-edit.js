@@ -1,7 +1,7 @@
 import { repeat } from 'lit/directives/repeat.js';
 import { css, html, LitElement, nothing } from 'lit';
 import bookmarkColorsCSS from './bookmark-colors.js';
-import buttonCSS from '../assets/button-base.js';
+import buttonCSS from '../../css/button-base.js';
 
 export class IABookmarkEdit extends LitElement {
   static get properties() {

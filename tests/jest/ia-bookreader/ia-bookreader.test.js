@@ -5,11 +5,11 @@ import {
   fixtureSync,
 } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
-import DownloadsProvider from '@/src/BookNavigator/downloads/downloads-provider.js';
-import SearchProvider from '@/src/BookNavigator/search/search-provider.js';
-import SharingProvider from '@/src/BookNavigator/sharing.js';
-import VisualAdjustmentsProvider from '@/src/BookNavigator/visual-adjustments/visual-adjustments-provider.js';
-import ViewableFilesProvider from '@/src/BookNavigator/viewable-files.js';
+import DownloadsProvider from '@/src/ia-bookreader/downloads/downloads-provider.js';
+import SearchProvider from '@/src/plugins/search/search-provider.js';
+import SharingProvider from '@/src/ia-bookreader/sharing.js';
+import VisualAdjustmentsProvider from '@/src/ia-bookreader/visual-adjustments/visual-adjustments-provider.js';
+import ViewableFilesProvider from '@/src/ia-bookreader/viewable-files.js';
 import { ModalManager } from '@internetarchive/modal-manager';
 import { SharedResizeObserver } from '@internetarchive/shared-resize-observer';
 import '@/src/ia-bookreader/ia-bookreader.js';

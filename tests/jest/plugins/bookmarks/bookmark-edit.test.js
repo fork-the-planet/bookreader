@@ -3,7 +3,7 @@ import {
   fixture,
   oneEvent,
 } from '@open-wc/testing-helpers';
-import '@/src/BookNavigator/bookmarks/bookmark-edit.js';
+import '@/src/plugins/bookmarks/bookmark-edit.js';
 
 const bookmarkColors = [{
   id: 0,

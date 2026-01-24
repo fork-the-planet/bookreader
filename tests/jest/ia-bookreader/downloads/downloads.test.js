@@ -4,7 +4,7 @@ import {
   fixtureCleanup,
 } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
-import '@/src/BookNavigator/downloads/downloads.js';
+import '@/src/ia-bookreader/downloads/downloads.js';
 
 
 const downloads = [

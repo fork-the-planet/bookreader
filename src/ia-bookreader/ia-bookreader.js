@@ -11,12 +11,12 @@ import '@internetarchive/ia-item-navigator';
 import '@internetarchive/modal-manager';
 import { SharedResizeObserver } from '@internetarchive/shared-resize-observer';
 import '@internetarchive/icon-ia-logo';
-import SearchProvider from '../BookNavigator/search/search-provider.js';
-import DownloadProvider from '../BookNavigator/downloads/downloads-provider.js';
-import VisualAdjustmentProvider from '../BookNavigator/visual-adjustments/visual-adjustments-provider.js';
-import BookmarksProvider from '../BookNavigator/bookmarks/bookmarks-provider.js';
-import SharingProvider from '../BookNavigator/sharing.js';
-import ViewableFilesProvider from '../BookNavigator/viewable-files.js';
+import SearchProvider from '../plugins/search/search-provider.js';
+import DownloadProvider from './downloads/downloads-provider.js';
+import VisualAdjustmentProvider from './visual-adjustments/visual-adjustments-provider.js';
+import BookmarksProvider from '../plugins/bookmarks/bookmarks-provider.js';
+import SharingProvider from './sharing.js';
+import ViewableFilesProvider from './viewable-files.js';
 import { sortBy } from '../BookReader/utils.js';
 /** @typedef {import('@/src/BookReader.js').default} BookReader */
 /** @typedef {import('@internetarchive/modal-manager').ModalManager} ModalManager */

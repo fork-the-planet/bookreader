@@ -1,6 +1,6 @@
 import { fixtureCleanup, fixtureSync } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
-import ViewableFilesProvider from '@/src/BookNavigator/viewable-files';
+import ViewableFilesProvider from '@/src/ia-bookreader/viewable-files';
 
 const brOptions = {
   "options": {

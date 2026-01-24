@@ -4,7 +4,7 @@ import {
   oneEvent,
 } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
-import { IABookVisualAdjustments } from '@/src/BookNavigator/visual-adjustments/visual-adjustments.js';
+import { IABookVisualAdjustments } from '@/src/ia-bookreader/visual-adjustments/visual-adjustments.js';
 
 const options = [{
   id: 'contrast',

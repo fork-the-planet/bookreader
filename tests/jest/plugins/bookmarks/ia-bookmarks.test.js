@@ -3,7 +3,7 @@ import {
   fixtureSync,
   fixtureCleanup,
 } from '@open-wc/testing-helpers';
-import '@/src/BookNavigator/bookmarks/ia-bookmarks.js';
+import '@/src/plugins/bookmarks/ia-bookmarks.js';
 import sinon from 'sinon';
 
 afterEach(() => {

@@ -4,7 +4,7 @@ import {
   oneEvent,
 } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
-import { IABookSearchResults } from '@/src/BookNavigator/search/search-results.js';
+import { IABookSearchResults } from '@/src/plugins/search/search-results.js';
 import { marshallSearchResults } from '@/src/plugins/search/utils.js';
 
 const container = (results = [], query = '') => (

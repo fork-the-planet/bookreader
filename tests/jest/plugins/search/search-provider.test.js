@@ -1,6 +1,6 @@
 import { fixtureCleanup, fixtureSync } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
-import searchProvider from '@/src/BookNavigator/search/search-provider.js';
+import searchProvider from '@/src/plugins/search/search-provider.js';
 
 afterEach(() => {
   sinon.restore();

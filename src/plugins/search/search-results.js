@@ -4,9 +4,9 @@ import { css, html, LitElement, nothing } from 'lit';
 import '@internetarchive/ia-activity-indicator/ia-activity-indicator.js';
 import checkmarkIconSvg from '../../assets/icons/checkmark.svg?raw';
 import closeIconSvg from '@internetarchive/icon-close/close.svg?raw';
-import buttonCSS from '../assets/button-base.js';
+import buttonCSS from '../../css/button-base.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { sharedStyles } from '../sharedStyles.js';
+import { sharedStyles } from '../../css/sharedStyles.js';
 import { svgToDataUrl } from '../../util/lit.js';
 /** @typedef {import('@/src/plugins/search/plugin.search.js').SearchInsideMatch} SearchInsideMatch */
 

@@ -1,5 +1,5 @@
 import { css, html, LitElement, nothing } from 'lit';
-import buttonStyles from '../assets/button-base.js';
+import buttonStyles from '../../css/button-base.js';
 export class IABookDownloads extends LitElement {
   static get properties() {
     return {
