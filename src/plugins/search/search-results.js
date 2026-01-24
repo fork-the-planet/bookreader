@@ -2,16 +2,16 @@
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { css, html, LitElement, nothing } from 'lit';
 import '@internetarchive/ia-activity-indicator/ia-activity-indicator.js';
-import checkmarkIconSvg from '../../assets/icons/checkmark.svg?raw';
-import closeIconSvg from '@internetarchive/icon-close/close.svg?raw';
+import checkmarkIconTemplate from '../../css/icon_checkmark.js';
+import closeIconTemplate from '@internetarchive/icon-close/index.js';
 import buttonCSS from '../../css/button-base.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { sharedStyles } from '../../css/sharedStyles.js';
 import { svgToDataUrl } from '../../util/lit.js';
 /** @typedef {import('@/src/plugins/search/plugin.search.js').SearchInsideMatch} SearchInsideMatch */
 
-const checkmarkIconData = svgToDataUrl(checkmarkIconSvg);
-const closeIconData = svgToDataUrl(closeIconSvg);
+const checkmarkIconData = svgToDataUrl(checkmarkIconTemplate.strings[0]);
+const closeIconData = svgToDataUrl(closeIconTemplate.strings[0]);
 
 export class IABookSearchResults extends LitElement {
   static get properties() {
