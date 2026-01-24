@@ -10,7 +10,7 @@ import { LitElement, html, css } from 'lit';
 import '@internetarchive/ia-item-navigator';
 import '@internetarchive/modal-manager';
 import { SharedResizeObserver } from '@internetarchive/shared-resize-observer';
-import iaLogo from '../BookNavigator/assets/ia-logo.js';
+import '@internetarchive/icon-ia-logo';
 import SearchProvider from '../BookNavigator/search/search-provider.js';
 import DownloadProvider from '../BookNavigator/downloads/downloads-provider.js';
 import VisualAdjustmentProvider from '../BookNavigator/visual-adjustments/visual-adjustments-provider.js';
@@ -92,7 +92,7 @@ export class IaBookReader extends LitElement {
       volumes: null,
     };
     this.signedIn = false;
-    this.fullscreenBranding = iaLogo;
+    this.fullscreenBranding = html`<ia-icon-ia-logo aria-hidden="true"></ia-icon-ia-logo>`;
     // Untracked properties
     this._sharedObserverHandler = { handleResize: this.handleResize.bind(this) };
     this._brWidth = 0;

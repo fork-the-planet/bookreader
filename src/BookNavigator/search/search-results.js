@@ -2,12 +2,16 @@
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { css, html, LitElement, nothing } from 'lit';
 import '@internetarchive/ia-activity-indicator/ia-activity-indicator.js';
-import checkmarkIcon from '../assets/icon_checkmark.js';
-import closeIcon from '../assets/icon_close.js';
+import checkmarkIconSvg from '../../assets/icons/checkmark.svg?raw';
+import closeIconSvg from '@internetarchive/icon-close/close.svg?raw';
 import buttonCSS from '../assets/button-base.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { sharedStyles } from '../sharedStyles.js';
+import { svgToDataUrl } from '../../util/lit.js';
 /** @typedef {import('@/src/plugins/search/plugin.search.js').SearchInsideMatch} SearchInsideMatch */
+
+const checkmarkIconData = svgToDataUrl(checkmarkIconSvg);
+const closeIconData = svgToDataUrl(closeIconSvg);
 
 export class IABookSearchResults extends LitElement {
   static get properties() {
@@ -285,7 +289,7 @@ export class IABookSearchResults extends LitElement {
         border-radius: 2px;
       }
       :checked + label.checkbox:after {
-        background-image: url('${checkmarkIcon}');
+        background-image: url('${checkmarkIconData}');
       }
 
       label.checkbox[for="all_files"]:after {
@@ -299,7 +303,7 @@ export class IABookSearchResults extends LitElement {
         -webkit-appearance: textfield;
         width: 100%;
         height: 3rem;
-        padding: 0 1.5rem;
+        padding: 0 10px;
         box-sizing: border-box;
         font: normal 1.6rem "Helvetica qNeue", Helvetica, Arial, sans-serif;
         border-radius: 1.5rem;
@@ -311,10 +315,11 @@ export class IABookSearchResults extends LitElement {
       [type="search"]::-webkit-search-cancel-button {
         width: 18px;
         height: 18px;
+        margin-right: -5px;
         -webkit-appearance: none;
         appearance: none;
-        -webkit-mask: url('${closeIcon}') 0 0 no-repeat;
-        mask: url('${closeIcon}') 0 0 no-repeat;
+        -webkit-mask: url('${closeIconData}') 0 0 no-repeat;
+        mask: url('${closeIconData}') 0 0 no-repeat;
         -webkit-mask-size: 100%;
         mask-size: 100%;
         background: #fff;

@@ -19,6 +19,10 @@ const shared = {
   module: {
     rules: [
       {
+        resourceQuery: /raw/, // Matches imports with "?raw"
+        type: 'asset/source',
+      },
+      {
         test: /\.js$/,
         exclude: /node_modules[/\\](?!(lit-element|lit-html|lit|@lit)[/\\]).*/,
         loader: "babel-loader",
