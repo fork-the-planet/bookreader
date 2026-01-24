@@ -1,7 +1,7 @@
 // @ts-check
 /**
  * Wrapping web component for Internet Archive's BookReader. Currently operates
- * more of as a shell ; requires BookReader to be instantiated independently in the
+ * more as a shell ; requires BookReader to be instantiated independently in the
  * main slot.
  */
 
@@ -243,7 +243,7 @@ export class IaBookReader extends LitElement {
    *
    * NOTE: we are doing our best to scope bookreader's instance.
    * If your submenu provider uses a bookreader instance to read, manually
-   * manipulate BookReader, please update the navigator's instance of it
+   * manipulate BookReader, please update ia-bookreader's instance of it
    * to keep it in sync.
    */
   initializeBookSubmenus() {
@@ -444,8 +444,7 @@ export class IaBookReader extends LitElement {
 
   /**
    * Adds a provider object to the menuShortcuts array property if it isn't
-   * already added. menuShortcuts are then sorted by shortcutOrder and
-   * a menuShortcutsUpdated event is emitted.
+   * already added, then sorts menuShortcuts based on shortcutOrder.
    *
    * @param {string} menuId - a string matching the id property of a provider
    */
@@ -482,7 +481,7 @@ export class IaBookReader extends LitElement {
    * Core bookreader event handler registry
    *
    * NOTE: we are trying to keep bookreader's instance in scope
-   * Please update Book Navigator's instance reference of it to keep it current
+   * Please update ia-bookreader's instance reference of it to keep it current
    */
   _bindEventListeners() {
     window.addEventListener('BookReader:PostInit', /** @param {CustomEvent} e */ (e) => {
@@ -525,7 +524,6 @@ export class IaBookReader extends LitElement {
   }
 
   /**
-   * Display an element's context menu
    * @param {PointerEvent} e
    **/
   _manageContextMenuVisibility(e) {
